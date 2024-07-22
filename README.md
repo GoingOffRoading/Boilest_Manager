@@ -5,6 +5,6 @@ A management GUI for Boilest-Scaling-Video-Encoder
 
 Todo:
 
-[ ] Flask UI for encoding stats
-[ ] Celery Flower worker reporting
-[ ] Celery Beat job kickoff
+- [ ] Flask UI for encoding stats
+- [ ] Celery Flower worker reporting
+- [ ] Celery Beat job kickoff
