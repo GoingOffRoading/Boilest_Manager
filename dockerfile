@@ -16,9 +16,6 @@ ARG GID=1000
 RUN addgroup -g $GID appgroup && \
     adduser -D -u $UID -G appgroup appuser
 
-# Create additional directories without setting ownership
-RUN mkdir -p /tv /anime /moviles
-
 # Create application directory and set ownership
 WORKDIR /app
 COPY . /app
@@ -27,6 +24,8 @@ RUN chown -R appuser:appgroup /app
 # Create log directory and set ownership
 RUN mkdir -p /app/logs && \
     chown -R appuser:appgroup /app/logs
+
+RUN chmod +x /entrypoint.sh
 
 # Environment variables
 ENV TZ=US/Pacific
@@ -51,4 +50,4 @@ ENV sql_pswd boilest
 USER appuser
 
 # Start supervisord
-CMD ["celery", "-A", "tasks", "worker"]
+CMD ["/entrypoint.sh"]

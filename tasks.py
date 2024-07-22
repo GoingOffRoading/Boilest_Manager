@@ -1,6 +1,5 @@
 from celery import Celery
-import logging, os, requests
-import celeryconfig
+import logging, os
 
 # create logger
 logger = logging.getLogger('boilest_logs')
@@ -34,10 +33,10 @@ def celery_url_path(thing):
 app = Celery('worker_queue', broker = celery_url_path('amqp://') )
 
 
-@app.on_after_configure.connect
+#@app.on_after_configure.connect
 # Celery's scheduler.  Kicks off queue_workers_if_queue_empty every hour
 # https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html#entries
-def setup_periodic_tasks(sender, **kwargs):
-    sender.add_periodic_task(3600.0, queue_workers_if_queue_empty.s('hit it'))
+#def setup_periodic_tasks(sender, **kwargs):
+#    sender.add_periodic_task(3600.0, queue_workers_if_queue_empty.s('hit it'))
 
 
