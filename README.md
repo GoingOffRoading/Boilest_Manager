@@ -98,7 +98,7 @@ Done.
 
 Todo:
 
-- [ ] Flask UI for encoding stats
-- [ ] Celery Flower worker reporting
-- [ ] Celery Beat job kickoff
-- [ ] Consider moving queue_workers_if_queue_empty to the manager container
+- [x] Flask UI for encoding stats
+- [x] Celery Flower worker reporting
+- [x] Celery Beat job kickoff
+- [x] Consider moving queue_workers_if_queue_empty to the manager container
