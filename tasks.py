@@ -3,7 +3,7 @@ import logging, os, time, requests
 
 # create logger
 logger = logging.getLogger('boilest_logs')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 # create console handler and set level to debug
 ch = logging.StreamHandler()
