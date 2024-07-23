@@ -13,13 +13,19 @@ A management UI that:
 ---
 # Prerequisites  
 
-Same prerequisites as [Boilest-Scaling-Video-Encoder](https://github.com/GoingOffRoading/Boilest-Scaling-Video-Encoder):
+Same prerequisites as [Boilest-Scaling-Video-Encoder](https://github.com/GoingOffRoading/Boilest-Scaling-Video-Encoder).  If these steps were followed when setting up [Boilest-Scaling-Video-Encoder](https://github.com/GoingOffRoading/Boilest-Scaling-Video-Encoder) then these steps can be skipped for Boilest-Management-GUI as the prerequisites are already in place.
 
 ## RabbitMQ
 
 The backbone of Boilest is a distributed task Python library called [Celery](https://docs.celeryq.dev/en/stable/getting-started/introduction.html). Celery needs a message transport (a place to store the task queue), and we leverage RabbitMQ for that.
 
 RabbitMQ will need to be deployed with it's management plugin.
+
+From the management plugin:
+
+- Create a 'celery' vhost
+- Create a user with the user/pwd of celery/celery
+- Give the celery .* configure, write, read permissions in the celery vhost
 
 ---
 ## MariaDB
