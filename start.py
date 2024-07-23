@@ -1,0 +1,2 @@
+from tasks import send_queue_workers_if_queue_empty
+send_queue_workers_if_queue_empty('farts')

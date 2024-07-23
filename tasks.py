@@ -1,5 +1,6 @@
 from celery import Celery
-import logging, os
+from celery.schedules import crontab
+import logging, os, time
 
 # create logger
 logger = logging.getLogger('boilest_logs')
@@ -21,8 +22,8 @@ logger.addHandler(ch)
 
 def celery_url_path(thing):
     # https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html#keeping-results
-    celery_user = os.environ.get('user')
-    celery_password = os.environ.get('password')
+    celery_user = os.environ.get('celery_user')
+    celery_password = os.environ.get('celery_password')
     celery_host = os.environ.get('celery_host')
     celery_port = os.environ.get('celery_port')
     celery_vhost = os.environ.get('celery_vhost')
@@ -33,10 +34,17 @@ def celery_url_path(thing):
 app = Celery('worker_queue', broker = celery_url_path('amqp://') )
 
 
-#@app.on_after_configure.connect
-# Celery's scheduler.  Kicks off queue_workers_if_queue_empty every hour
-# https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html#entries
-#def setup_periodic_tasks(sender, **kwargs):
-#    sender.add_periodic_task(3600.0, queue_workers_if_queue_empty.s('hit it'))
+def send_task():
+    task_name = 'tasks.queue_workers_if_queue_empty'
+    task_arg = 'farts'  # Replace 'your_argument' with the actual argument you want to pass
+    queue_name = 'boilest_worker'
+    
+    app.send_task(task_name, args=[task_arg], queue=queue_name)
+    logger.info(f"Task sent to queue: {queue_name}")
 
+if __name__ == "__main__":
+    while True:
+        send_task()
+        # Wait for one hour (3600 seconds)
+        time.sleep(3600)
 

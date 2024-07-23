@@ -7,7 +7,7 @@ RUN apk update && \
         build-base \
         linux-headers \
         supervisor && \
-    pip install --no-cache-dir celery requests mysql-connector-python && \
+    pip install --no-cache-dir celery flower requests Flask mysql-connector-python && \
     apk upgrade
 
 # Create a non-root user and group
@@ -19,20 +19,18 @@ RUN addgroup -g $GID appgroup && \
 # Create application directory and set ownership
 WORKDIR /app
 COPY . /app
+RUN mkdir -p /app/logs
 RUN chown -R appuser:appgroup /app 
 
-# Create log directory and set ownership
-RUN mkdir -p /app/logs && \
-    chown -R appuser:appgroup /app/logs
-
-RUN chmod +x /entrypoint.sh
+# Make the entrypoint executable
+RUN chmod +x /app/entrypoint.sh
 
 # Environment variables
 ENV TZ=US/Pacific
 
 # Used in celery and rabbitmq
-ENV user celery
-ENV password celery
+ENV celery_user celery
+ENV celery_password celery
 ENV celery_host 192.168.1.110
 ENV celery_port 31672
 ENV celery_vhost celery
@@ -46,8 +44,24 @@ ENV sql_database boilest
 ENV sql_user boilest
 ENV sql_pswd boilest
 
+# Used in Flask
+ENV FLASK_APP=Flask.py
+ENV FLASK_ENV=development
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=5000
+
+# User in Flower: https://flower.readthedocs.io/en/latest/config.html
+ENV FLOWER_FLOWER_BASIC_AUTH celery:celery
+ENV FLOWER_persistent true
+ENV FLOWER_db /app/flower_db
+ENV FLOWER_purge_offline_workers 60
+ENV FLOWER_UNAUTHENTICATED_API true
+
 # Run as non-root user
 USER appuser
 
+EXPOSE 5000
+EXPOSE 5555
+
 # Start supervisord
-CMD ["/entrypoint.sh"]
+CMD ["./entrypoint.sh"]

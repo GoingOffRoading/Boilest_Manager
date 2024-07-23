@@ -1,13 +1,10 @@
-#!/bin/bash
-
-# Start Redis server in the background
-redis-server &
+#!/bin/sh
 
 # Start Celery Beat in the background
-celery -A task.celery beat -l info &
+#celery -A tasks beat -l info &
 
 # Start Celery Flower in the background
-celery -A task.celery flower --port=5555 &
+celery -A tasks flower --port=5555 &
 
 # Start Flask application
 flask run --host=0.0.0.0
