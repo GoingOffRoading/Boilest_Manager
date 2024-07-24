@@ -1,7 +1,7 @@
 # app.py
 
 from flask import Flask, render_template, request
-import mysql.connector, subprocess, os
+import mysql.connector, subprocess, os, math
 
 app = Flask(__name__)
 
@@ -51,6 +51,10 @@ def get_data_from_db():
 
     return result_1, result_2, result_3, result_4, table_data_1, table_data_2
 
+
+
+
+
 # Route for the home page
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -64,11 +68,29 @@ def index():
     # Get data from the database
     result_1, result_2, result_3, result_4, table_data_1, table_data_2 = get_data_from_db()
 
-    print('diagnostic1')
+    result_1 = round_size(result_1)
+    result_4 = round_size(result_4)
 
     # Render the template with the retrieved data
     return render_template(template_path, result_1=result_1, result_2=result_2, result_3=result_3, result_4=result_4,
                            table_data_1=table_data_1, table_data_2=table_data_2)
+
+
+
+def round_size(kilobytes):
+    kilobytes = float(kilobytes)
+    if kilobytes < 1024:
+        return f"{kilobytes:.1f} KB"
+    elif kilobytes < 1024**2:
+        megabytes = kilobytes / 1024
+        return f"{math.ceil(megabytes * 10) / 10:.1f} MB"
+    elif kilobytes < 1024**3:
+        gigabytes = kilobytes / 1024**2
+        return f"{math.ceil(gigabytes * 10) / 10:.1f} GB"
+    else:
+        terabytes = kilobytes / 1024**3
+        return f"{math.ceil(terabytes * 10) / 10:.1f} TB"
+
 
 if __name__ == '__main__':
     app.run(debug=True)
