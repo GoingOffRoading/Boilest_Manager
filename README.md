@@ -102,4 +102,5 @@ Todo:
 - [x] Celery Flower worker reporting
 - [x] Celery Beat job kickoff
 - [x] Consider moving queue_workers_if_queue_empty to the manager container
-- [ ] Fix funny table label errors
+- [x] Fix funny table label errors
+- [ ] Rewrite the SQL that populates the table so it's selecting columns, not *
