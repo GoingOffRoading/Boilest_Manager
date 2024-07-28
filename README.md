@@ -104,3 +104,4 @@ Todo:
 - [x] Consider moving queue_workers_if_queue_empty to the manager container
 - [x] Fix funny table label errors
 - [ ] Rewrite the SQL that populates the table so it's selecting columns, not *
+- [ ] Convert KB to something readable
